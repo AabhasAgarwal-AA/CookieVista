@@ -1,0 +1,282 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-destructive: var(--destructive);
+  --color-positive: var(--positive);
+  --color-negative: var(--negative);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 1px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ============================================================
+   CookieVista theme
+
+   Reference points are trading terminals and instrument panels,
+   not landing pages: a warm near-black ink, flat surfaces that
+   step by lightness alone, and structure carried by hairline
+   borders rather than shadow or blur.
+
+   Exactly one hue carries interaction — a toasted amber. Green
+   and red are reserved for signed values (up/down, ok/failed) so
+   that colour on the page always means something. Anything that
+   is merely decorative is greyscale.
+   ============================================================ */
+
+:root {
+  --radius: 0.25rem;
+
+  /* Base — warm near-black. The slight yellow cast keeps it from
+     reading as the default cold "dark mode blue". */
+  --background: oklch(0.155 0.004 75);
+  --foreground: oklch(0.95 0.004 75);
+
+  /* Surfaces step by lightness only — no translucency, no blur.
+     card < popover keeps floating things legibly above panels. */
+  --card: oklch(0.185 0.004 75);
+  --card-foreground: oklch(0.95 0.004 75);
+  --popover: oklch(0.215 0.005 75);
+  --popover-foreground: oklch(0.95 0.004 75);
+
+  /* Primary — toasted amber. The only chromatic interactive colour. */
+  --primary: oklch(0.76 0.13 66);
+  --primary-foreground: oklch(0.2 0.03 66);
+
+  --secondary: oklch(0.24 0.004 75);
+  --secondary-foreground: oklch(0.9 0.004 75);
+
+  --muted: oklch(0.225 0.004 75);
+  --muted-foreground: oklch(0.63 0.006 75);
+
+  /* Accent is a hover/active *surface*, not a brand colour.
+     Keeping it neutral is what lets amber stay meaningful. */
+  --accent: oklch(0.27 0.005 75);
+  --accent-foreground: oklch(0.95 0.004 75);
+
+  /* Signed values. Desaturated enough to sit next to body text. */
+  --positive: oklch(0.76 0.14 158);
+  --negative: oklch(0.68 0.17 25);
+  --destructive: oklch(0.62 0.2 25);
+  --destructive-foreground: oklch(0.98 0 0);
+
+  /* Borders do the structural work, so they are visible on purpose.
+     border-strong is for edges that separate regions, not fields. */
+  --border: oklch(1 0 0 / 11%);
+  --border-strong: oklch(1 0 0 / 18%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.76 0.13 66);
+
+  /* Categorical chart slots — assigned in fixed order, never cycled.
+     These are validated as a set against this surface for colour-vision
+     deficiency and normal-vision separation; re-run the palette validator
+     before changing a value or reordering the slots. Single-series charts
+     use --primary instead and leave these alone. */
+  --chart-1: #3987e5;   /* blue */
+  --chart-2: #d95926;   /* orange */
+  --chart-3: #199e70;   /* aqua */
+  --chart-4: #c98500;   /* yellow */
+  --chart-5: #d55181;   /* magenta */
+
+  --sidebar: oklch(0.175 0.004 75);
+  --sidebar-foreground: oklch(0.95 0.004 75);
+  --sidebar-primary: oklch(0.76 0.13 66);
+  --sidebar-primary-foreground: oklch(0.2 0.03 66);
+  --sidebar-accent: oklch(0.27 0.005 75);
+  --sidebar-accent-foreground: oklch(0.95 0.004 75);
+  --sidebar-border: oklch(1 0 0 / 11%);
+  --sidebar-ring: oklch(0.76 0.13 66);
+}
+
+/* Light theme — opt-in via <html class="light">.
+   Warm paper rather than pure white, to match the dark base. */
+.light {
+  --background: oklch(0.985 0.004 85);
+  --foreground: oklch(0.21 0.008 75);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.21 0.008 75);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.21 0.008 75);
+
+  --primary: oklch(0.58 0.12 62);
+  --primary-foreground: oklch(0.99 0 0);
+
+  --secondary: oklch(0.955 0.005 85);
+  --secondary-foreground: oklch(0.29 0.008 75);
+
+  --muted: oklch(0.955 0.005 85);
+  --muted-foreground: oklch(0.48 0.008 75);
+
+  --accent: oklch(0.94 0.006 85);
+  --accent-foreground: oklch(0.21 0.008 75);
+
+  --positive: oklch(0.52 0.13 158);
+  --negative: oklch(0.55 0.18 25);
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.99 0 0);
+
+  --border: oklch(0.88 0.005 85);
+  --border-strong: oklch(0.8 0.006 85);
+  --input: oklch(0.86 0.005 85);
+  --ring: oklch(0.58 0.12 62);
+
+  /* Same hues, stepped for the light surface (validated separately).
+     Slots 3-5 sit below 3:1 here, so charts using them must carry visible
+     labels rather than relying on colour alone. */
+  --chart-1: #2a78d6;
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
+  --chart-4: #eda100;
+  --chart-5: #e87ba4;
+
+  --sidebar: oklch(0.97 0.004 85);
+  --sidebar-foreground: oklch(0.21 0.008 75);
+  --sidebar-primary: oklch(0.58 0.12 62);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.94 0.006 85);
+  --sidebar-accent-foreground: oklch(0.21 0.008 75);
+  --sidebar-border: oklch(0.88 0.005 85);
+  --sidebar-ring: oklch(0.58 0.12 62);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Deliberately flat. The page is a surface for data, not a
+       backdrop — no gradients, no fixed attachment, no blobs. */
+  }
+  ::selection {
+    background: oklch(0.76 0.13 66 / 0.28);
+  }
+
+  /* Keyboard-only focus ring — mouse clicks get no outline. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  /* Numbers are read in columns and compared, so they get tabular
+     figures globally rather than per-component. */
+  table,
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ============================================================
+   Utilities
+   ============================================================ */
+
+@layer utilities {
+
+  /* Section eyebrow: the small caps label above a panel or field.
+     Used instead of bolder/larger headings to keep the page quiet. */
+  .eyebrow {
+    font-size: 10px;
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Tabular figures for prices, balances, slots. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  /* Status dot. Colour comes from the caller via `color`, so the same
+     element serves live / degraded / offline without extra classes. */
+  .status-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: currentColor;
+    box-shadow: 0 0 0 3px color-mix(in oklch, currentColor 18%, transparent);
+  }
+
+  /* Slim scrollbar for dense scrolling panels. */
+  .cv-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .cv-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .cv-scroll::-webkit-scrollbar-thumb {
+    background: oklch(1 0 0 / 0.1);
+    border-radius: 3px;
+  }
+  .cv-scroll::-webkit-scrollbar-thumb:hover {
+    background: oklch(1 0 0 / 0.2);
+  }
+  .light .cv-scroll::-webkit-scrollbar-thumb {
+    background: oklch(0 0 0 / 0.12);
+  }
+
+  /* Newly arrived rows fade in only — no travel. Movement in a live
+     feed reads as noise once more than one row updates at a time. */
+  .fade-in {
+    animation: fade-in 0.25s ease-out;
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fade-in {
+      animation: none;
+    }
+  }
+}
