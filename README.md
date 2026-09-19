@@ -226,6 +226,74 @@ To switch to real transactions, drop in your Cookieswap program instruction buil
 
 ---
 
+## On-chain addresses
+
+A full inventory of every address in this codebase, and which are real. **CookieVista deploys no program of its own and has no custom contract address** — its on-chain surface is entirely read-only RPC queries against native SVM programs.
+
+### Native SVM programs (real)
+
+Canonical Solana/SVM program IDs, defined in `src/app/api/cookie/feed/route.ts`. They are used **only as a lookup table to label programs** seen in the activity feed — nothing is deployed to them and none are invoked:
+
+| Address | Program |
+|---|---|
+| `11111111111111111111111111111111` | System |
+| `TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA` | SPL Token |
+| `ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL` | Associated Token Account |
+| `BPFLoader2111111111111111111111111111111111` | BPF Loader |
+| `Vote111111111111111111111111111111111111111` | Vote |
+| `ComputeBudget111111111111111111111111111111` | Compute Budget |
+| `Config1111111111111111111111111111111111111` | Config |
+| `Stake11111111111111111111111111111111111111` | Stake |
+| `MemoSq4gqABAXKb96qnH8TysNcWUMytCcjDJFwfoQVFo` | Memo |
+
+### Addresses queried live
+
+The activity feed reads real on-chain data via `getSignaturesForAddress` against:
+
+| Address | Role |
+|---|---|
+| `11111111111111111111111111111111` | System program — primary feed source, since it pays fees on the widest variety of transactions |
+| `4wHgybVzqEKn17HRh1MXdLDdaZDh6Y59atZrLtygmCew` | Hardcoded fallback (node identity), used only when the primary source returns nothing |
+
+### Token mints (placeholders — not real)
+
+The non-native mints in `src/lib/cookie-chain.ts` are **invented placeholders**, not deployed tokens. Six of the seven are not even decodable as base58: the alphabet excludes `0`, `O`, `I`, and `l` to avoid visual ambiguity, and these contain `0` (plus `O` in OVEN's case). The `milk` mint is 46 characters, beyond the 44-character maximum for a 32-byte public key.
+
+| Symbol | Mint | Length | Valid base58 |
+|---|---|---|---|
+| COOKIE | `native` | — | Sentinel value, not an address |
+| milk | `MiLk7KqLr5C7P6mR3sQ8NtV4xY1wZ2aB3cD4eF5gH6iJ7k` | 46 | Characters valid, but too long |
+| CHIP | `ChP8C7o6K5c4B3a2D1eF0gH9iJ8kL7mN6oP5qR4sT3u` | 43 | No — contains `0` |
+| BUTR | `BuT1tR2e3W4q5X6y7Z8a9B0cD1eF2gH3iJ4kL5mN6oP7` | 44 | No — contains `0` |
+| SUGR | `SuG5aR4cD3eF2gH1iJ0kL9mN8oP7qR6sT5uV4wX3yZ2a` | 44 | No — contains `0` |
+| OVEN | `OvE3nN2oP1qR0sT9uV8wX7yZ6aB5cD4eF3gH2iJ1kL0m` | 44 | No — contains `0` and `O` |
+| DOUGH | `DoU6gH5iJ4kL3mN2oP1qR0sT9uV8wX7yZ6aB5cD4eF3` | 43 | No — contains `0` |
+| JAR | `JaR1cD2eF3gH4iJ5kL6mN7oP8qR9sT0uV1wX2yZ3aB4` | 43 | No — contains `0` |
+
+The `verified` flag on these tokens is cosmetic — it renders a tick in the swap dropdown and carries no on-chain meaning.
+
+**Do not paste these into anything that validates addresses.** They exist so the swap and pool UIs have a realistic token set to render; substitute real mints once Cookie Chain publishes them.
+
+### Other synthetic identifiers
+
+| Identifier | Where | Notes |
+|---|---|---|
+| Pool IDs | `src/lib/cookie-chain.ts` | Plain slugs (`pool-cookie-milk`, `pool-oven-jar`, …), not addresses |
+| Transaction signatures | `src/app/api/cookie/tx/route.ts` | Generated from `Date.now()` plus the wallet address, followed by a 400-700ms delay imitating finality |
+
+### Summary
+
+| Question | Answer |
+|---|---|
+| Custom program / contract address | None — nothing is deployed |
+| Token mint addresses | Placeholders, not real |
+| Real on-chain reads | Yes — live RPC against native programs |
+| Real on-chain writes | No — simulated by default (see above) |
+
+The genuine on-chain integration is the read path: `getHealth`, `getSlot`, `getBlockHeight`, `getEpochInfo`, `getRecentPerformanceSamples`, `getVersion`, `getIdentity`, `getBalance`, and `getSignaturesForAddress`, all against `https://rpc.cookiescan.io`.
+
+---
+
 ## Design system
 
 CookieVista runs **dark by default**. The reference points are trading terminals and instrument panels, not landing pages: a warm near-black ink, flat surfaces that step by lightness alone, and structure carried by hairline borders rather than shadow, blur, or gradient.
